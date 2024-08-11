@@ -18,8 +18,8 @@ class QuizController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'manager_id' => 'required|exists:users,id',
+            // 'category_id' => 'required|exists:categories,id',
+            // 'manager_id' => 'required|exists:users,id',
         ]);
         $quiz = Quiz::create($request->all());
         return response()->json($quiz, 201);
@@ -29,6 +29,17 @@ class QuizController extends Controller
     {
         return $quiz;
     }
+
+    // Récupérer les quiz par catégorie
+    public function getQuizzesByCategory($categoryId)
+    {
+        // Récupérer les quiz correspondant à la catégorie donnée
+        $quizzes = Quiz::where('category_id', $categoryId)->get();
+
+        // Retourner les quiz en format JSON
+        return response()->json($quizzes);
+    }
+    
     //modification d'un quiz
     public function update(Request $request, Quiz $quiz)
     {

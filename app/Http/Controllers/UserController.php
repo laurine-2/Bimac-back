@@ -27,7 +27,7 @@ class UserController extends Controller
             'matricule' => $request->matricule,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role
+            'role' => $request->role 
         ]);
         
         return response()->json(['message' => 'User registered successfully'], 201);
@@ -42,10 +42,18 @@ class UserController extends Controller
         ]);
  
         if (Auth::attempt($credentials)) {
-
             $user = Auth::user();
             $token = $user->createToken('authToken')->plainTextToken;
-            return response()->json(['token' => $token], 200);
+            // Include user details in the response
+            return response()->json([
+                'token' => $token,
+                'user' => [
+                    'firstname' => $user->firstname,
+                    'lastname' => $user->lastname,
+                    'username' => $user->matricule, // Assuming matricule is used as username
+                    'role' => $user->role
+                ]
+            ], 200);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);

@@ -23,11 +23,13 @@ class CategoryController extends Controller
         //     'manager_id' => 'require|exists:users,id',
 
         // ]);
+        \Log::info($request->all());
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'manager_id' => ['required', 'exists:users,id']
+            // 'manager_id' => ['required', 'exists:users,id']
         ]);
+
         $category = Category::create($data);
         return response()->json($category, 201);
     }
@@ -44,7 +46,7 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'manager_id' => 'require|exists:users,id',
+            // 'manager_id' => 'require|exists:users,id',
         ]);
         $category->update($request->all());
         return response()->json($category, 200);

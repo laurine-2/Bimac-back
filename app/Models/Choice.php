@@ -10,6 +10,7 @@ class Choice extends Model
     use HasFactory;
     protected $fillable =[
         'content',
+        'is_correct',
         'question_id',
     ];
     public function question(){
