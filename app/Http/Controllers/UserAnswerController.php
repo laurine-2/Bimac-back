@@ -18,7 +18,7 @@ class UserAnswerController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'question_id' => 'required|exists:questions,id',
-            'answer_id' => 'required|exists:answers,id',
+            // 'answer_id' => 'required|exists:answers,id',
         ]);
 
         $userAnswer = UserAnswer::create($request->all());
@@ -35,7 +35,7 @@ class UserAnswerController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'question_id' => 'required|exists:questions,id',
-            'answer_id' => 'required|exists:answers,id',
+            // 'answer_id' => 'required|exists:answers,id',
         ]);
 
         $userAnswer->update($request->all());

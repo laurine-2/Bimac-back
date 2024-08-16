@@ -11,7 +11,7 @@ class UserAnswer extends Model
     protected $fillable = [
         'user_id',
         'question_id',
-        'answer',
+        // 'answer_id',
     ];
 
     //relation avec les users
@@ -26,8 +26,8 @@ class UserAnswer extends Model
         return $this->belongsTo(Question::class);
     }
     //relation avec les reponses
-    public function answer()
-    {
-        return $this->belongsTo(Answer::class);
-    }
+    // public function answer()
+    // {
+    //     return $this->belongsTo(Answer::class);
+    // }
 }

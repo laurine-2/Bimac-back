@@ -48,6 +48,7 @@ class UserController extends Controller
             return response()->json([
                 'token' => $token,
                 'user' => [
+                    'id'=> $user->id,
                     'firstname' => $user->firstname,
                     'lastname' => $user->lastname,
                     'username' => $user->matricule, // Assuming matricule is used as username

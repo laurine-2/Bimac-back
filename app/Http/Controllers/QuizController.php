@@ -25,10 +25,17 @@ class QuizController extends Controller
         return response()->json($quiz, 201);
     }
     //affichage d'un quiz spécifique
-    public function show(Quiz $quiz)
-    {
-        return $quiz;
-    }
+    // public function show(Quiz $quiz)
+    // {
+    //     return $quiz;
+    // }
+    public function show($id)
+{
+    // Utilisez le chargement en eager loading pour récupérer les questions et les choix associés
+    $quiz = Quiz::with('questions.choices')->findOrFail($id);
+    return response()->json($quiz);
+}
+
 
     // Récupérer les quiz par catégorie
     public function getQuizzesByCategory($categoryId)
@@ -57,6 +64,24 @@ class QuizController extends Controller
         $quiz->delete();
         return response()->json(null, 204);
     }
+// Methode permettant de recuperer les question par quizz
+public function getQuestions($quizId)
+{
+    // Charger le quiz avec ses questions et les choix associés
+    $quiz = Quiz::with('questions.choices')->find($quizId);
+
+    if (!$quiz) {
+        return response()->json(['error' => 'Quiz not found'], 404);
+    }
+
+    // Retourner les questions si elles existent
+    if ($quiz->questions->isEmpty()) {
+        return response()->json([], 200); // Retourne un tableau vide si pas de questions
+    }
+
+    return response()->json($quiz->questions, 200);
+}
+
     //soumettre les reponses du quiz et calculer le score.
     public function submitAnswer(Request $request, $quizId){
         $request->validate([

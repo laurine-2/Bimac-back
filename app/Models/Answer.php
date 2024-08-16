@@ -18,7 +18,7 @@ class Answer extends Model
         return $this->belongsTo(Question::class);
     }
     //relation avec les reponses des users
-    public function userAnswer(){
-        return $this->hasMany(UserAnswer::class);
-    }
+    // public function userAnswer(){
+    //     return $this->hasMany(UserAnswer::class);
+    // }
 }
