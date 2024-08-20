@@ -64,11 +64,14 @@ Route::middleware('auth:sanctum')->group(function () {
  
      // Routes CRUD pour les résultats
      Route::get('results', [ResultController::class, 'index']);
+     Route::get('/results', [ResultController::class, 'index']);
+     Route::post('/results', [ResultController::class, 'store']);
      Route::get('results/{id}', [ResultController::class, 'show']);
      Route::delete('results/{id}', [ResultController::class, 'destroy']);
  
      // Soumettre les réponses d'un quiz
      Route::post('quizzes/{quizId}/submit', [QuizController::class, 'submitAnswers']);
+     Route::post('quizzes/{quizId}/submit', [UserAnswerController::class, 'submitQuiz']);
      Route::get('categories/{categoryId}/quizzes', [QuizController::class, 'getQuizzesByCategory']);
      Route::get('/quizzes/{quizId}/questions', [QuestionController::class, 'getQuestionsByQuiz']);
      Route::post('quizzes/{quizId}/questions', [QuestionController::class, 'store']);

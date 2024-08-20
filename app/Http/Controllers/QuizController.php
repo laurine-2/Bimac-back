@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
+use App\Models\Choice;
+use App\Models\UserAnswer;
+use App\Models\Result;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class QuizController extends Controller
 {
@@ -83,13 +88,15 @@ public function getQuestions($quizId)
 }
 
     //soumettre les reponses du quiz et calculer le score.
-    public function submitAnswer(Request $request, $quizId){
+    public function submitAnswer(Request $request, $quizId)
+    {
         $request->validate([
             'answers' => 'required|array',
             'answers.*.question_id' => 'required|exists:questions,id',
-            'answers.*.answer_ids' => 'required|array',
-            'answers.*.answer_ids.*' => 'required|exists:answers,id',
+            'answers.*.choice_ids' => 'required|array',
+            'answers.*.choice_ids.*' => 'required|exists:choices,id',
         ]);
+
         $user = Auth::user();
         $quiz = Quiz::findOrFail($quizId);
         $totalQuestions = $quiz->questions->count();
@@ -97,32 +104,41 @@ public function getQuestions($quizId)
 
         foreach ($request->answers as $answer) {
             $questionId = $answer['question_id'];
-            foreach ($answer['answer_ids'] as $answerId) {
-                $userAnswer = UserAnswer::create([
+            $selectedChoices = $answer['choice_ids'];
+
+            // Récupérer toutes les réponses correctes pour la question
+            $correctChoices = Choice::where('question_id', $questionId)
+                ->where('is_correct', true)
+                ->pluck('id')
+                ->toArray();
+
+            // Comparer les choix de l'utilisateur avec les choix corrects
+            if (array_diff($correctChoices, $selectedChoices) === [] &&
+                array_diff($selectedChoices, $correctChoices) === []) {
+                $correctAnswers++;
+            }
+
+            // Enregistrer chaque choix sélectionné par l'utilisateur dans la table user_answers
+            foreach ($selectedChoices as $choiceId) {
+                UserAnswer::create([
                     'user_id' => $user->id,
                     'question_id' => $questionId,
-                    'answer_id' => $answerId,
+                    'choice_id' => $choiceId,
                 ]);
-
-                // Vérifier si la réponse est correcte
-                $isCorrect = $userAnswer->answer->is_correct;
-                if ($isCorrect) {
-                    $correctAnswers++;
-                }
             }
         }
 
-        // Calculer le score
+        // Calculer le score en pourcentage
         $score = ($correctAnswers / $totalQuestions) * 100;
 
-        // Enregistrer le résultat
-        Result::create([
+        // Enregistrer le résultat dans la table results
+        $result = Result::create([
             'score' => $score,
             'user_id' => $user->id,
             'quiz_id' => $quizId,
         ]);
 
-        return response()->json(['message' => 'Answers submitted successfully', 'score' => $score]);
+        return response()->json(['message' => 'Quiz submitted successfully', 'result' => $result]);
     }
 
     }

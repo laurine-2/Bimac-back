@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('question_id')->constrained('questions')->onDelete('cascade');
-            // $table->foreignId('answer_id')->constrained('answers')->onDelete('cascade');
+            $table->foreignId('choice_id')->constrained('choices')->onDelete('cascade'); 
             $table->timestamps();
         });
     }
@@ -28,3 +28,5 @@ return new class extends Migration
         Schema::dropIfExists('user_answers');
     }
 };
+
+
