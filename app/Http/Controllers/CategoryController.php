@@ -11,6 +11,8 @@ class CategoryController extends Controller
     public function index()
     {
         return Category::all();
+    
+
     }
 
     //creation d'une nouvelle category
@@ -34,11 +36,23 @@ class CategoryController extends Controller
         return response()->json($category, 201);
     }
 
-    //Afficher une category spécifique
+    // Afficher une category spécifique
     public function show(Category $category)
     {
         return $category;
     }
+
+    // public function show($id)
+    // {
+    //     $category = Category::find($id);
+    
+    //     if ($category) {
+    //         return response()->json($category, 200);
+    //     } else {
+    //         return response()->json(['message' => 'Category not found'], 404);
+    //     }
+    // }
+    
 
     //mise ajour des category
     public function update(Request $request, Category $category)

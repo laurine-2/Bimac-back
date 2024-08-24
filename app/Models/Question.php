@@ -31,4 +31,7 @@ class Question extends Model
     public function userAnswers(){
         return $this->hasMany(UserAnswer::class);
     }
+
+    
+
 }

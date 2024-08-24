@@ -38,5 +38,10 @@ class Quiz extends Model
         return $this->hasMany(Result::class);
 
     }
+    public function team() {
+        return $this->belongsTo(Team::class);
+    }
+
+    
     
 }

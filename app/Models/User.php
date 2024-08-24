@@ -53,6 +53,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Result::class);
     }
+    
 
     /**
      * Get the attributes that should be cast.
@@ -66,4 +67,5 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
 }
