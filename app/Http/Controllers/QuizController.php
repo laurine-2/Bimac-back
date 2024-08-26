@@ -23,8 +23,8 @@ class QuizController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            // 'category_id' => 'required|exists:categories,id',
-            // 'manager_id' => 'required|exists:users,id',
+            'category_id' => 'required|exists:categories,id',
+            'manager_id' => 'required|exists:users,id',
         ]);
         $quiz = Quiz::create($request->all());
         return response()->json($quiz, 201);

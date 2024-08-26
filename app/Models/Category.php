@@ -13,6 +13,7 @@ class Category extends Model
         'name',
         'description',
         'manager_id',
+        'team_id',
     ];
     public function quizzers(){
         return $this->hasMany(Quiz::class);
@@ -20,5 +21,8 @@ class Category extends Model
     public function manager(){
         return $this->belongsTo(User::class,'manager_id');
     }
+    public function team(){
+        return $this->belongsTo(Team::class,'team_id');
+        }
    
 }

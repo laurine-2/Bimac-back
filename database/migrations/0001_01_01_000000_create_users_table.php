@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['user', 'manager', 'admin']);
+            $table->foreignId('team_id')->nullable()->constrained('teams')->onDelete('set null');
             $table->timestamps();
         });
     

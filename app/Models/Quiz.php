@@ -14,6 +14,7 @@ class Quiz extends Model
         'description',
         'category_id',
         'manager_id',
+        
     ];
 
     //relation entre quiz et category (un quiz appartient à une category)

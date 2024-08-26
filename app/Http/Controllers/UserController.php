@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+
+    public function index()
+    {
+        // Récupérer tous les utilisateurs
+        $users = User::all();
+        return response()->json($users);
+    }
     // Inscription d'un nouvel utilisateur.
     public function register(Request $request)
     {
@@ -18,7 +26,8 @@ class UserController extends Controller
             'matricule' => 'required|string|max:50|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:user,manager,admin',
+            // 'role' => 'required|in:user,manager,admin',
+            'team_id' => 'required|exists:teams,id', // Validation pour l'équipe sélectionnée
         ]);
         
         $user = User::create([
@@ -27,7 +36,8 @@ class UserController extends Controller
             'matricule' => $request->matricule,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => $request->role 
+            'role' => 'user', // Toujours définir le rôle comme 'user' par défaut
+            'team_id' => $request->team_id, // Assigner l'équipe
         ]);
         
         return response()->json(['message' => 'User registered successfully'], 201);

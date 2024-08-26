@@ -23,6 +23,7 @@ class QuestionController extends Controller
             'choices' => 'required|array',
             'choices.*.content' => 'required|string',
             'choices.*.is_correct' => 'required|boolean',
+            
         ]);
 
         // Créer la question

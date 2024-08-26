@@ -11,6 +11,8 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\UserAnswerController;
+use App\Http\Controllers\TeamController;
+
 
 Route::post('register', [UserController::class, 'register']);
 Route::post('login', [UserController::class, 'login']);
@@ -18,6 +20,17 @@ Route::post('login', [UserController::class, 'login']);
 
 // Routes protégées par l'authentification
 Route::middleware('auth:sanctum')->group(function () {
+
+     // user
+     Route::get('/users', [UserController::class, 'index']);
+
+       // Routes CRUD pour les équipes
+       Route::get('teams', [TeamController::class, 'index']);
+       Route::post('teams', [TeamController::class, 'store']);
+       Route::get('teams/{id}', [TeamController::class, 'show']);
+       Route::put('teams/{id}', [TeamController::class, 'update']);
+       Route::delete('teams/{id}', [TeamController::class, 'destroy']);
+  
 
      // Routes CRUD pour les réponses des utilisateurs
 
@@ -68,7 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::post('/results', [ResultController::class, 'store']);
      Route::get('results/{id}', [ResultController::class, 'show']);
      Route::delete('results/{id}', [ResultController::class, 'destroy']);
- 
+
+    
      // Soumettre les réponses d'un quiz
      Route::post('quizzes/{quizId}/submit', [QuizController::class, 'submitAnswers']);
      Route::post('quizzes/{quizId}/submit', [UserAnswerController::class, 'submitQuiz']);
@@ -77,5 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::post('quizzes/{quizId}/questions', [QuestionController::class, 'store']);
 
      Route::get('/quizzes/{quizId}/questions', [QuizController::class, 'getQuestions']);
+
+
 
 });
